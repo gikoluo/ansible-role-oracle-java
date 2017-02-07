@@ -19,12 +19,7 @@
 - name: set java OS for Linux
   set_fact:
     jdk_os: linux
-  when: ansible_system == 'Linux'
 
-- name: set java OS for Mac OS X
-  set_fact:
-    jdk_os: macosx
-  when: ansible_os_family == 'Darwin'
 
 
 #

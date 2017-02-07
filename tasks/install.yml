@@ -14,8 +14,6 @@
   include: use-tarball.yml
 
 
-
-
 - block:
     - name: make sure /etc/profile.d exists
       file: path=/etc/profile.d  state=directory mode="0755"
@@ -30,11 +28,11 @@
 - name: remove temporary downloaded files, if requested
   file: path={{ item }} state=absent
   with_items:
-    - "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
-    - "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
-    - "{{ java_download_path }}/{{ jdk_tarball_file }}.dmg"
-    - "{{ java_download_path }}/check-tarball-installed.sh"
-    - "{{ java_download_path }}/{{ jce_zip_file }}"
-    - "{{ java_download_path }}/{{ jce_zip_folder }}"
+    - "{{ java_tmp_path }}/{{ jdk_tarball_file }}.rpm"
+    - "{{ java_tmp_path }}/{{ jdk_tarball_file }}.tar.gz"
+    - "{{ java_tmp_path }}/{{ jdk_tarball_file }}.dmg"
+    - "{{ java_tmp_path }}/check-tarball-installed.sh"
+    - "{{ java_tmp_path }}/{{ jce_zip_file }}"
+    - "{{ java_tmp_path }}/{{ jce_zip_folder }}"
   ignore_errors: true
   when: java_remove_download

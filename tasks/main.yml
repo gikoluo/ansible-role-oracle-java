@@ -19,10 +19,10 @@
 
 
 - name: copy scripts to server
-  copy: src="check-java-version.sh"  dest="{{ java_download_path }}/"  mode="a+x"
+  copy: src="check-java-version.sh"  dest="{{ java_tmp_path }}/"  mode="a+x"
 
 - name: check if specific version of Oracle JDK is installed?
-  shell: "{{ java_download_path }}/check-java-version.sh {{ jdk_version }}"
+  shell: "{{ java_tmp_path }}/check-java-version.sh {{ jdk_version }}"
   register: jdk_info
   changed_when: false
   failed_when: jdk_info.rc > 0

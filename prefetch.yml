@@ -1,6 +1,5 @@
-- hosts: all
-  become: yes
-  become_method: sudo
+- hosts: 127.0.0.1
+  connection: local
   tasks:
     - include: tasks/set-role-variables.yml
     - name: fetch .rpm or .tar.gz files from Oracle site
