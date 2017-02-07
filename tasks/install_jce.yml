@@ -1,0 +1,39 @@
+---
+# Installation script for Java Cryptography Extensions (JCE)
+
+- name: install unzip
+  package: name=unzip state=present
+
+- name: "Copy JCE"
+  copy:
+    src: "{{ playbook_dir }}/files/{{ jce_zip_file }}"
+    dest: "{{ java_download_path }}/{{ jce_zip_file }}"
+    mode: "0644"
+
+- name: unzip JCE
+  unarchive:
+    src: "{{ java_download_path }}/{{ jce_zip_file }}"
+    dest: "{{ java_download_path }}"
+    copy: no
+    creates: "{{ java_download_path }}/{{ jce_zip_folder }}"
+
+- name: install JCE policies
+  copy:
+    src: "{{ java_download_path }}/{{ jce_zip_folder }}/{{ item }}"
+    dest: "{{ java_install_dir }}/jdk{{ jdk_version }}/jre/lib/security/{{ item }}"
+    remote_src: True
+    mode: 0664
+  become: true
+  with_items:
+    - local_policy.jar
+    - US_export_policy.jar
+
+- name: remove temporary downloaded JCE files, if requested
+  file: path={{ item }} state=absent
+  with_items:
+    - "{{ java_download_path }}/{{ jce_zip_file }}"
+    - "{{ java_download_path }}/{{ jce_zip_folder }}"
+  ignore_errors: true
+  when: java_remove_download
+  
+

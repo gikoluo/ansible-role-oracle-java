@@ -1,0 +1,32 @@
+#
+# fetch .tar.gz files
+#
+
+- stat:
+    path: "{{ java_download_path }}/{{ jdk_tarball_file }}"
+  register: st
+
+- debug: msg="Download {{ jdk_tarball_url }} to {{ playbook_dir }}/files/{{ jdk_tarball_file }}"
+
+- name: get JDK tarball (as tar.gz file)
+  get_url:
+    url:     "{{ jdk_tarball_url }}"
+    dest:    "{{ playbook_dir }}/files/{{ jdk_tarball_file }}"
+    mode:    0644
+  when: not st.stat.exists
+
+- block:
+  - stat:
+      path: "{{ java_download_path }}/{{ jdk_tarball_file }}"
+    register: st2
+
+  - debug: msg="Download {{ jce_zip_url }} to {{ playbook_dir }}/files/{{ jce_zip_file }}"
+
+  - name: get JCE
+    get_url:
+      url:     "{{ jce_zip_url }}"
+      headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
+      dest:    "{{ playbook_dir }}/files/{{ jce_zip_file }}"
+      mode:    0644
+    when: not st2.stat.exists
+  when: java_install_jce

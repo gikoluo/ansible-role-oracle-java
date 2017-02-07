@@ -1,0 +1,40 @@
+---
+# file: tasks/install.yml
+# Top-level installer for Oracle JDK.
+#
+
+
+- name: fetch .rpm or .tar.gz files from Oracle site
+  include: fetch.yml
+  delegate_to: localhost
+  become: false
+
+
+- name: delegate to raw tarball installation process
+  include: use-tarball.yml
+
+
+
+
+- block:
+    - name: make sure /etc/profile.d exists
+      file: path=/etc/profile.d  state=directory mode="0755"
+
+    - name: export JAVA_HOME
+      template:
+        src:  ../templates/java_home.sh.j2
+        dest: /etc/profile.d/java_home.sh
+        mode: "a+x"
+  when: java_set_javahome
+
+- name: remove temporary downloaded files, if requested
+  file: path={{ item }} state=absent
+  with_items:
+    - "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
+    - "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
+    - "{{ java_download_path }}/{{ jdk_tarball_file }}.dmg"
+    - "{{ java_download_path }}/check-tarball-installed.sh"
+    - "{{ java_download_path }}/{{ jce_zip_file }}"
+    - "{{ java_download_path }}/{{ jce_zip_folder }}"
+  ignore_errors: true
+  when: java_remove_download

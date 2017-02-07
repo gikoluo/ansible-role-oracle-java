@@ -1,0 +1,49 @@
+---
+# file: tasks/main.yml
+# Top-level installer for Oracle JDK.
+#
+
+- name: precondition - java_version
+  fail: msg="ERROR - required variable 'java_version' missing."
+  when: java_version is not defined
+
+- name: precondition - java_subversion
+  fail: msg="ERROR - required variable 'java_subversion' missing."
+  when: java_subversion is not defined
+
+- name: precondition - java_install_jce
+  fail: msg="ERROR - required variable 'java_install_jce' missing."
+  when: java_install_jce is not defined
+
+- include: set-role-variables.yml
+
+
+- name: copy scripts to server
+  copy: src="check-java-version.sh"  dest="{{ java_download_path }}/"  mode="a+x"
+
+- name: check if specific version of Oracle JDK is installed?
+  shell: "{{ java_download_path }}/check-java-version.sh {{ jdk_version }}"
+  register: jdk_info
+  changed_when: false
+  failed_when: jdk_info.rc > 0
+
+- stat: path="{{ java_install_dir }}/{{ java_default_link_name }}"
+  register: installedcheck
+
+- include: install.yml
+  when: installedcheck.stat.exists == False
+
+- name: Check if JCE is already installed
+  shell: "{{ java_install_dir }}/jdk{{ jdk_version }}/bin/jrunscript -e 'print (javax.crypto.Cipher.getMaxAllowedKeyLength(\"RC5\") >= 256);'"
+  changed_when: false
+  ignore_errors: true
+  register: jce_check
+
+- name: delegate to JCE zip installation process
+  include: install_jce.yml
+  when: java_install_jce==true and jce_check.stdout == "false"
+
+- include: link.yml
+
+
+
