@@ -20,8 +20,6 @@
   set_fact:
     jdk_os: linux
 
-
-
 #
 # version-specific variables
 #
@@ -110,11 +108,12 @@
     jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b{{ java_build }}"
   when: jdk_version_detail is not defined and java_build is defined
 
+- debug: var=jdk_tarball_file
 
 - name: compose filename, if necessary
   set_fact:
     jdk_tarball_file: "jdk-{{ java_version }}u{{ java_subversion }}-{{ jdk_os }}-{{ jdk_arch }}.tar.gz"
-  when: jdk_tarball_file is not defined
+  when: jdk_tarball_file is not defined or jdk_tarball_file == ""
 
 - name: compose url for downloading file, if necessary
   set_fact:

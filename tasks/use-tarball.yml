@@ -15,11 +15,11 @@
 
 - debug: var=jdk_tarball_file
 
-- debug: msg="src={{ java_download_path }}/{{ jdk_tarball_file }}"
+- debug: msg="src={{ java_downloaded_path }}/{{ jdk_tarball_file }}"
 
 - name: Copy tar.gz
   copy:
-    src: "{{ java_download_path }}/{{ jdk_tarball_file }}"
+    src: "{{ java_downloaded_path }}/{{ jdk_tarball_file }}"
     dest: "{{ java_tmp_path }}/{{ jdk_tarball_file }}"
     mode: "0644"
 

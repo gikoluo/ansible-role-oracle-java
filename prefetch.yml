@@ -1,15 +1,20 @@
+---
+
+
 - hosts: 127.0.0.1
   connection: local
+  vars_files:
+    - "defaults/main.yml"
+  pre_tasks:
+    - name: unset jdk_tarball_file
+      set_fact:
+        jdk_tarball_file: ""
+      when: jdk_tarball_file is defined
   tasks:
     - include: tasks/set-role-variables.yml
     - name: fetch .rpm or .tar.gz files from Oracle site
       include: tasks/fetch.yml
-
-  #vars_files:
-  #  - 'defaults/main.yml'
-
   vars:
-    - java_version: 8
-    - java_subversion: 111
-    - java_download_path: /tmp
-    - java_install_jce: true
+    java_version: "{{ java_version|default(8)}} "
+    java_subversion: "{{ java_subversion|default(111)}} "
+    java_install_jce: "{{ java_install_jce|default(true)}} "

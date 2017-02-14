@@ -6,7 +6,7 @@
 
 - name: "Copy JCE"
   copy:
-    src: "{{ java_download_path }}/{{ jce_zip_file }}"
+    src: "{{ java_downloaded_path }}/{{ jce_zip_file }}"
     dest: "{{ java_tmp_path }}/{{ jce_zip_file }}"
     mode: "0644"
 
