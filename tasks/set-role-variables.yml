@@ -28,6 +28,11 @@
     jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b13"
   when: java_version == 8 and java_subversion == "121"
 
+- name: set internal vars for 1.8.0_112
+  set_fact:
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b13"
+  when: java_version == 8 and java_subversion == "112"
+
 - name: set internal vars for 1.8.0_92 or 1.8.0_91
   set_fact:
     jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b14"
@@ -106,7 +111,7 @@
     jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b{{ java_build }}"
   when: jdk_version_detail is not defined and java_build is defined
 
-- debug: var=jdk_tarball_file
+
 
 - name: compose filename, if necessary
   set_fact:
@@ -118,6 +123,14 @@
     jdk_tarball_url:  "http://download.oracle.com/otn-pub/java/jdk/{{ jdk_version_detail }}/{{ jdk_tarball_file }}"
   when: jdk_version_detail is defined
 
+- name: compose url for downloading file, if necessary
+  set_fact:
+    jdk_tarball_url:  "http://download.oracle.com/otn-pub/java/jdk/{{ jdk_version_detail }}/e9e7ea248e2c4826b92b3f075a80e441/{{ jdk_tarball_file }}"
+  when: jdk_version_detail is defined and java_subversion=="121"
+
+  #
+
+- debug: var=jdk_tarball_file
 
 #
 # JCE variables

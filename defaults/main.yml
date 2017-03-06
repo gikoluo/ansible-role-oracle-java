@@ -23,3 +23,7 @@ default_link: false
 
 java_tmp_path: /tmp
 java_downloaded_path: "files"
+
+java_default_version: "8"
+java_7_default_subversion: "80"
+java_8_default_subversion: "112"

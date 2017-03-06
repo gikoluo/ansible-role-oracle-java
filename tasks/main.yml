@@ -27,11 +27,16 @@
   changed_when: false
   failed_when: jdk_info.rc > 0
 
+- debug: var=jdk_info
+
 - stat: path="{{ java_install_dir }}/{{ java_default_link_name }}"
   register: installedcheck
 
+- debug: var=installedcheck 
+
 - include: install.yml
-  when: installedcheck.stat.exists == False
+  when: (jdk_info.stdout|from_json).not_found
+  #when: installedcheck.stat.exists == False 
 
 - name: Check if JCE is already installed
   shell: "{{ java_install_dir }}/jdk{{ jdk_version }}/bin/jrunscript -e 'print (javax.crypto.Cipher.getMaxAllowedKeyLength(\"RC5\") >= 256);'"

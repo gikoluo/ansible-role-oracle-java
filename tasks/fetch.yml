@@ -6,6 +6,8 @@
     path: "{{ java_downloaded_path }}/{{ jdk_tarball_file }}"
   register: st
 
+- debug: var=st
+
 - debug: msg="Download {{ jdk_tarball_url }} to {{ java_downloaded_path }}/{{ jdk_tarball_file }}"
 
 - name: get JDK tarball (as tar.gz file)

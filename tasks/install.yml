@@ -8,11 +8,10 @@
   include: fetch.yml
   delegate_to: localhost
   become: false
-
+  run_once: true
 
 - name: delegate to raw tarball installation process
   include: use-tarball.yml
-
 
 - block:
     - name: make sure /etc/profile.d exists
