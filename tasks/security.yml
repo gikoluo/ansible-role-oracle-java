@@ -1,0 +1,8 @@
+---
+
+- lineinfile:
+    path: "{{ java_install_dir }}/{{ java_default_link_name }}/lib/security/java.security"
+    regexp: '^securerandom.source='
+    line: 'securerandom.source=file:/dev/./urandom'
+
+   
