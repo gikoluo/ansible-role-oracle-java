@@ -13,10 +13,6 @@
     group: root
     mode: "u=rwx,go=rx"
 
-- debug: var=jdk_tarball_file
-
-- debug: msg="src={{ java_downloaded_path }}/{{ jdk_tarball_file }}"
-
 - name: Copy tar.gz
   copy:
     src: "{{ java_downloaded_path }}/{{ jdk_tarball_file }}"

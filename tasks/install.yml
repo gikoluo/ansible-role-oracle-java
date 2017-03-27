@@ -24,6 +24,9 @@
         mode: "a+x"
   when: java_set_javahome
 
+
+   
+   
 - name: remove temporary downloaded files, if requested
   file: path={{ item }} state=absent
   with_items:

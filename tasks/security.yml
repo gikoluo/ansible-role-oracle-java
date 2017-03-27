@@ -1,8 +1,10 @@
 ---
 
-- lineinfile:
-    path: "{{ java_install_dir }}/{{ java_default_link_name }}/lib/security/java.security"
+
+### fix the random bug for java
+###  see bug: http://www.thezonemanager.com/2015/07/whats-so-special-about-devurandom.html
+- name: "java securerandom"
+  lineinfile:
+    dest: "{{ java_install_dir }}/jdk{{ jdk_version }}/jre/lib/security/java.security"
     regexp: '^securerandom.source='
     line: 'securerandom.source=file:/dev/./urandom'
-
-   

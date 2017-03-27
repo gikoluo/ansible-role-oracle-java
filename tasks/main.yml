@@ -33,7 +33,6 @@
   when: (jdk_info.stdout|from_json).not_found
 
 - include: security.yml
-  when: (jdk_info.stdout|from_json).not_found
 
 - name: Check if JCE is already installed
   shell: "{{ java_install_dir }}/jdk{{ jdk_version }}/bin/jrunscript -e 'print (javax.crypto.Cipher.getMaxAllowedKeyLength(\"RC5\") >= 256);'"
